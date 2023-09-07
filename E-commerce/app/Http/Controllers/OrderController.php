@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Orders;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 class OrderController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("auth");
+    }
     
 
     public function store(Request $request)
@@ -17,7 +23,7 @@ class OrderController extends Controller
 
         $order = Orders::create([
 
-            'user_id' => 1,
+            'user_id' =>  Auth::user()->id,
             'amounts' => $amount = Cart::total(),
             'address' => 'dakar'
         ]);
