@@ -27,7 +27,7 @@ Route::get('/', function () {
             ->with("categories")
             ->paginate(5)
     ]);
-});
+})->name('product.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -87,9 +87,9 @@ Route::prefix('/admin')
     Route::get('/category','index')->name('category.index'); 
     Route::get('/category/create','create')->name('category.create'); 
     Route::post('/category/create','store')->name('category.store'); 
-    Route::get('/category/edit/{category}','edit')->name('category.edit'); 
-    Route::post('/category/update/{category}','update')->name('category.update'); 
-    Route::get('/category/delete/{category}','destroy')->name('category.delete'); 
+    Route::get('/category/edit/{id}','edit')->name('category.edit'); 
+    Route::post('/category/update/{id}','update')->name('category.update'); 
+    Route::get('/category/delete/{id}','destroy')->name('category.delete'); 
 
 });
 

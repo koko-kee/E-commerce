@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         return View("admin.products.index",[
-            "products" => Product::orderBy("created_at","desc")->paginate(10)
+            "products" => Product::orderBy("created_at","desc")->paginate(5)
         ]);
     }
 
@@ -45,7 +45,6 @@ class ProductController extends Controller
         //  
     }
 
-    
     public function edit(string $slug)
     {
         $product = Product::where("slug", $slug)->first();

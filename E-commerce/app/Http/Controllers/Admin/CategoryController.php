@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FormCategoryRequest;
+use App\Models\Categorie;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -12,47 +14,47 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return View("admin.categories.index",[
+            "categories" => Categorie::orderBy("created_at","desc")->paginate(5)
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+  
     public function create()
     {
-        //
+        return View("admin.categories.create",[
+            "category" => new Categorie()
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(FormCategoryRequest $request)
     {
-        //
+        Categorie::create($request->validated());
+        return redirect()->route("admin.category.index")->with("success", "la categorie a ete create ");
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+  
+    public function edit($id)
     {
-        //
+        $category = Categorie::find($id);
+        return View("admin.categories.edit",[
+            "category" => $category,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FormCategoryRequest $request, string $id)
     {
-        //
+        $category = Categorie::find($id);
+        $category->update($request->validated());
+        return redirect()->route("admin.category.index")->with("success", "la categorie a ete update ");
     }
 
     /**
@@ -60,6 +62,9 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = Categorie::find($id);
+        $category->delete();
+        $category->products()->detach();
+        return redirect()->route("admin.category.index")->with("success", "la categorie a ete delete ");
     }
 }

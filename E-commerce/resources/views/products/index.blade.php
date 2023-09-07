@@ -1,7 +1,6 @@
 @extends('layout.partials')
 
 @section('content')
-
     @foreach ($products as $item)
         <div class="col-md-6">
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -23,5 +22,5 @@
             </div>
         </div>  
     @endforeach
-
+{{$products->links()}}
 @endsection
