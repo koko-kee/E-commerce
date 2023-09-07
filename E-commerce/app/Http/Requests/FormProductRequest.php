@@ -30,7 +30,7 @@ class FormProductRequest extends FormRequest
             "description" => ["required", "min:5"],
             "quantity" => ["required", "integer", "min:1"], 
             "price" => ["required", "integer"],
-            "image" => ["required", "image"],
+            "image" => ["image"],
             "categories" => ["array","exists:categories,id"],
         ];
     }

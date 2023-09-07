@@ -73,8 +73,7 @@ Route::prefix('/admin')
     Route::post('/product/create','store')->name('product.store'); 
     Route::get('/product/edit/{slug}','edit')->name('product.edit'); 
     Route::post('/product/update/{product}','update')->name('product.update'); 
-    Route::get('/product/delete/{slug}','destroy')->name('product.delete'); 
-
+    Route::get('/product/delete/{product}','destroy')->name('product.delete'); 
 });
 
 

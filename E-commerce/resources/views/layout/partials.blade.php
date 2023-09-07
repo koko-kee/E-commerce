@@ -166,7 +166,7 @@
         </a>
       </div>
       <div class="col-4 text-center">
-        <a class="blog-header-logo text-dark" href="/boutique">E-COMMERCE</a>
+        <a class="blog-header-logo text-dark" href="/boutique"> E-COMMERCE</a>
       </div>
       <div class="col-4 d-flex justify-content-end align-items-center">
         <a class="link-secondary" href="#" aria-label="Search">
@@ -175,7 +175,7 @@
         @auth
          <form action="{{route('logout')}}" method="POST">
             @csrf
-           <button class="btn btn-sm btn-outline-secondary" type="submit">Decoonexion</button> 
+           <button class="btn btn-sm btn-outline-secondary" type="submit">Deconnexion</button> 
         </form>
         @endauth
         @guest

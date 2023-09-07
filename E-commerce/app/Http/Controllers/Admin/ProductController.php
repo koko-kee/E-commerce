@@ -59,7 +59,7 @@ class ProductController extends Controller
     {
         $data = $request->validated();
 
-        if($data["image"])
+        if(isset($data["image"]))
         {
             if ($product->image) {
 
@@ -71,12 +71,18 @@ class ProductController extends Controller
 
         $product->categories()->sync($data["categories"]);
         $product->update( $data);
-        return redirect()->route("admin.product.index")->with("success","produit editer avec success");
+        return redirect()->route("admin.product.index")->with("success"," Le produit a ete editer  ");
     }
 
     
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        // 
+        if($product->image)
+        {
+            Storage::disk("public")->delete($product->image);
+        }
+        $product->delete();
+        $product->categories()->detach();
+        return redirect()->route("admin.product.index")->with("success","Le produit a ete supprimer ");
     }
 }
