@@ -165,8 +165,9 @@
           </span>
         </a>
       </div>
-      <div class="col-4 text-center">
-        <a class="blog-header-logo text-dark font-weight-light text-decoration-none" href="/boutique"> E-COMMERCE</a>
+      <div class="col-4  text-center d-flex align-items-center">
+        <img width="75" src="/storage/produit/kisspng-computer-icons-scalable-vector-graphics-applicatio-tynor-wrist-splint-ambidextrous-rs-274-wrist-s-5bac3149dcb297.944285061538011465904-removebg-preview.png" alt="">
+        <a class=" d-block blog-header-logo text-dark font-weight-light text-decoration-none" href="/boutique">Shopping</a>
       </div>
       <div class="col-4 d-flex justify-content-end align-items-center">
         <nav class="navbar navbar-light ">
