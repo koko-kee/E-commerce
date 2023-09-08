@@ -19,7 +19,8 @@ class AppServiceProvider extends ServiceProvider
     
     public function boot(): void
     {
-        if ($_SERVER['REQUEST_URI'] == '/boutique'){
+        $uri = isset($_SERVER['REQUEST_URI']) ?? '/boutique';
+        if ($uri == '/boutique'){
             Paginator::useBootstrapFive();
         } else {
             Paginator::useTailwind();

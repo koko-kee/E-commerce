@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Categorie;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\View\View;
+
 class CartController extends Controller
 {
 
@@ -16,7 +18,9 @@ class CartController extends Controller
     
     public function index()
     {
-        return  View('cart.index');
+        return  View('cart.index', [
+            "categories" => Categorie::select("id","name")->get()
+        ]);
     }
 
     public function increase(string $rowId)
@@ -29,9 +33,6 @@ class CartController extends Controller
             return redirect()->route('cart.index');
        }
        return redirect()->route('cart.index')->with("danger","impossible d'ajouter au panier");
-
-
-
     }
 
     public function decrease(string $rowId)
