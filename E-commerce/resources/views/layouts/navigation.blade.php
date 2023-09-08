@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('dashboard')">
                         {{ __('Gestions des utilisateurs') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('dashboard')">
+                        {{ __('Gestions des commandes') }}
+                    </x-nav-link>
                 </div>
             </div>
 

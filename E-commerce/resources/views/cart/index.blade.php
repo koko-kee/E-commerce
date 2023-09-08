@@ -29,7 +29,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                 @foreach (Cart::content() as $item)   
+                 @forelse (Cart::content() as $item)   
                  <tr>
                     <th scope="row" class="border-0">
                       <div class="p-2">
@@ -50,7 +50,8 @@
                             <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i></button>
                         </form>
                      </tr>
-                 @endforeach
+                     @empty
+                 @endforelse
                  
                 </tbody>
               </table>

@@ -166,38 +166,47 @@
         </a>
       </div>
       <div class="col-4 text-center">
-        <a class="blog-header-logo text-dark" href="/boutique"> E-COMMERCE</a>
+        <a class="blog-header-logo text-dark font-weight-light text-decoration-none" href="/boutique"> E-COMMERCE</a>
       </div>
       <div class="col-4 d-flex justify-content-end align-items-center">
-        <a class="link-secondary" href="#" aria-label="Search">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"/><path d="M21 21l-5.2-5.2"/></svg>
-        </a>
+        <nav class="navbar navbar-light ">
+            <form class="d-flex">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </nav>
         @auth
-         <form action="{{route('logout')}}" method="POST">
-            @csrf
-           <button class="btn btn-sm btn-outline-secondary" type="submit">Deconnexion</button> 
-        </form>
+        <div class="dropdown">
+          <a class="d-inline-block dropdown-toggle text-decoration-none text-secondary m-3" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+           Admin
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li>
+              <form action="{{route("logout")}}" method="post">
+                 @csrf
+                 <button class="dropdown-item" type="submit">Deconnexion</button>
+              </form>
+            </li>
+          </ul>
+        </div>
         @endauth
         @guest
-        <a class="btn btn-sm btn-outline-secondary" href="{{route('login')}}">connectez-vous</a>
+        <a class="text-decoration-none m-2 text-secondary" href="{{route('login')}}">Login</a>
+        <a class="text-decoration-none text-dark" href="{{route('login')}}">Register</a>
         @endguest
       </div>
     </div>
   </header>
 
+
+
   <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
-      <a class="p-2 link-secondary text-decoration-none" href="#">World</a>
-      <a class="p-2 link-secondary text-decoration-none" href="#">U.S.</a>
-      <a class="p-2 link-secondary text-decoration-none" href="#">Technology</a>
-      <a class="p-2 link-secondary text-decoration-none" href="#">Design</a>
-      <a class="p-2 link-secondary text-decoration-none" href="#">Culture</a>
-      <a class="p-2 link-secondary text-decoration-none" href="#">Business</a>
-      <a class="p-2 link-secondary text-decoration-none" href="#">Politics</a>
-      <a class="p-2 link-secondary text-decoration-none" href="#">Opinion</a>
-      <a class="p-2 link-secondary text-decoration-none" href="#">Science</a>
-      <a class="p-2 link-secondary text-decoration-none" href="#">Health</a>
-      <a class="p-2 link-primary text-decoration-none" href="/dashboard">Dashbord</a>
+      @foreach ($categories as $category)
+         <a class="p-2 link-secondary text-decoration-none" href="{{$category->id}}">{{$category->name}}</a>
+      @endforeach
     </nav>
   </div>
 </div>
@@ -214,16 +223,6 @@
   </div>  
 @endif
 
-@if(request()->route()->getName() != 'cart.index' && request()->route()->getName() != 'order.thankYou')
-  <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
-    <div class="col-md-6 px-0">
-      <h1 class="display-4 fst-italic">Title of a longer featured blog post</h1>
-      <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p>
-      <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
-    </div>
-  </div>
-@endif
-
 <div class="row mb-2">
     @yield('content')
 </div>
@@ -236,6 +235,8 @@
     <a href="#">Back to top</a>
   </p>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
 </body>
 </html>
