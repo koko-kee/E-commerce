@@ -179,18 +179,20 @@
         @auth
         <div class="dropdown">
           <a class="d-inline-block dropdown-toggle text-decoration-none text-secondary m-3" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-           Admin
+           {{Auth::user()->name}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li>
-              <form action="{{route("logout")}}" method="post">
-                 @csrf
-                 <button class="dropdown-item" type="submit">Deconnexion</button>
-              </form>
+            <li class="mb-2"><a class="dropdown-item" href="/dashboard"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            <li class="mb-2"><a class="dropdown-item" href="{{route("order.index")}}"><i class="fas fa-shopping-cart"></i> Mes commandes</a></li>
+            <li class="mb-2"><a class="dropdown-item" href="#"><i class="fas fa-envelope"></i> Boite de réception</a></li>
+            <li class="mb-2">
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button class="dropdown-item" type="submit"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+                </form>
             </li>
-          </ul>
+        </ul>
+        
         </div>
         @endauth
         @guest

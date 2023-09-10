@@ -35,7 +35,16 @@
                       <div class="p-2">
                         <img src="/storage/{{getImage($item->id)}}" alt="" width="70" class="img-fluid rounded shadow-sm">
                         <div class="ml-3 d-inline-block align-middle">
-                          <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">{{$item->name}}</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: Watches</span>
+                          <h5 class="mb-0">
+                             <a href="#" class="text-dark text-decoration-none d-inline-block ">{{$item->name}}</a>
+                          </h5>
+                          
+                          <span class="text-muted font-weight-normal font-italic d-block">
+                            Category: 
+                            @foreach (getCategories($item->id) as $category)
+                                {{$category->name}}
+                            @endforeach 
+                          </span>
                         </div>
                       </div>
                     </th>

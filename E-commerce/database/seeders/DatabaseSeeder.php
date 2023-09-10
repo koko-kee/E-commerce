@@ -20,11 +20,11 @@ class DatabaseSeeder extends Seeder
 
         $faker = Factory::create();
 
-        Categorie::create(['name' => 'category_1']);
-        Categorie::create(['name' => 'category_2']);
-        Categorie::create(['name' => 'category_3']);
-        Categorie::create(['name' => 'category_4']);
-
+        Categorie::create(['name' => 'technologie']);
+        Categorie::create(['name' => 'accessoire']);
+        Categorie::create(['name' => 'jeux']);
+        Categorie::create(['name' => 'vetement']);
+        
         for ($i=1; $i <= 10; $i++) { 
             
             $title =  $faker->sentence(4); 
@@ -35,9 +35,9 @@ class DatabaseSeeder extends Seeder
                 'name' =>  $title,
                 'slug' => $slug,
                 'subtitle' => $faker->text(50),
-                'description' => $faker->paragraph(4), // Utilisez des paragraphes
+                'description' => $faker->paragraph(4), 
                 'price' => $faker->numberBetween(1500, 5000),
-                'image' => 'http://www.w3.org/2000/svg', // Utilisez une URL d'image aléatoire
+                'image' => 'http://www.w3.org/2000/svg', 
 
             ])->categories()
             ->attach([

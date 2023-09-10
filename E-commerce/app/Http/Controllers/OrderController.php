@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Orders;
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Categorie;
+use Illuminate\View\View;
+use App\Mail\OrderCarryOut;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Events\confirmOrderProcessed;
 use Illuminate\Support\Facades\Session;
-use Illuminate\View\View;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class OrderController extends Controller
 {
@@ -16,37 +20,76 @@ class OrderController extends Controller
     {
         $this->middleware("auth");
     }
-    
+
+    public function index()
+    {
+        $orders = Orders::where('user_id', Auth::id())->get();
+        return view('orders.index',[
+            "orders" => $orders
+        ]);
+    }
+
+    public function show($id)
+    {
+        $order = Orders::findOrFail($id);
+        return view('orders.show',  [
+            "order" => $order
+        ]);
+    }
 
     public function store(Request $request)
     {
-
-        $order = Orders::create([
-
+        $user = Auth::user();
+        $orders = Orders::create([
             'user_id' =>  Auth::user()->id,
             'amounts' => $amount = Cart::total(),
             'address' => 'dakar'
         ]);
-
+        
         foreach (Cart::content() as $cartItem) {
 
-            $order->detailOrder()->create([
+            $orders->detailOrder()->create([
 
                 'product_id' => $cartItem->id,
                 'quantity' => $cartItem->qty,
                 'unity_price' => $cartItem->price 
-
             ]);
         }
-        Cart::destroy();
-        return  redirect()->route('order.thankYou');
         
+        Cart::destroy();
+        event(new confirmOrderProcessed($user, $orders));
+        return  redirect()->route('order.thankYou');
     }
+
+    public function confirmOrder(Orders $order)
+    {
+       $order->order_statut = "en attende d'expedtion";
+       $order->save();
+    }
+
+    public function edit($id)
+    {
+        // Logique de modification de commande ici
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        // Logique de mise à jour de commande ici
+    }
+
+    public function cancel($id)
+    {
+        // Logique d'annulation de commande ici
+    }
+
 
     public function thankYou()
     {
         Session::flash('success','votre commande a bien ete traitee');
-        return View('checkout.thankyou');
+        return View('checkout.thankyou',[
+            "categories" => Categorie::select("id","name")->get()
+        ]);
     }
 
    
