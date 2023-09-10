@@ -215,6 +215,14 @@
 </div>
 
 <main class="container">
+@if (session('thanks'))
+  <div class="alert alert-success">
+    <ul>
+      <li>{{session('thanks')}}</li>
+      <li>Veuillez consulter votre boite mail pour confirmation de la commande </li>
+    </ul>
+  </div>  
+@endif
 @if (session('success'))
   <div class="alert alert-success">
       {{session('success')}}

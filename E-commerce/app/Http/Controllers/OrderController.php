@@ -29,9 +29,11 @@ class OrderController extends Controller
         ]);
     }
 
+    
     public function show($id)
     {
         $order = Orders::findOrFail($id);
+        //dd($order->detailOrder);
         return view('orders.show',  [
             "order" => $order
         ]);
@@ -40,9 +42,10 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
+
         $orders = Orders::create([
-            'user_id' =>  Auth::user()->id,
-            'amounts' => $amount = Cart::total(),
+            'user_id' => $user->id,
+            'amounts' => Cart::total(),
             'address' => 'dakar'
         ]);
         
@@ -61,10 +64,12 @@ class OrderController extends Controller
         return  redirect()->route('order.thankYou');
     }
 
-    public function confirmOrder(Orders $order)
+    public function confirmOrder($id)
     {
+       $order = Orders::find($id);
        $order->order_statut = "en attende d'expedtion";
        $order->save();
+       return redirect()->route("product.index")->with("success","Merci pour votre Achat");
     }
 
     public function edit($id)
@@ -86,7 +91,7 @@ class OrderController extends Controller
 
     public function thankYou()
     {
-        Session::flash('success','votre commande a bien ete traitee');
+        Session::flash('thanks','votre commande a bien ete traitee');
         return View('checkout.thankyou',[
             "categories" => Categorie::select("id","name")->get()
         ]);

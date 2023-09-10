@@ -10,6 +10,9 @@ class detailOrder extends Model
     use HasFactory;
 
     protected $fillable = ['product_id','quantity','unity_price'];
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
 
     public function order()
     {

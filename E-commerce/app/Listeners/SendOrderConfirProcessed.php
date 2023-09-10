@@ -25,7 +25,6 @@ class SendOrderConfirProcessed
      */
     public function handle(confirmOrderProcessed $event): void
     {
-        sleep(60);
         $this->mailer->send(new OrderCarryOut($event->user , $event->orders));
         $order = Orders::find($event->orders->id);
         $order->order_statut = "en attente de confirmation";

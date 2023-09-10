@@ -19,7 +19,7 @@
                         </div>
                         <div class="block ml-10 max-w-2xl">
                             <h3 class="font-bold mb-2" >{{$detail->product->name}}</h3>
-                            <h3 class="font-semibold mb-2 text-dark">{{$detail->product->price}} FCFA</h3>
+                            <h3 class="font-semibold mb-2 text-dark">{{getPrice($detail->product->price)}} FCFA</h3>
                             <h5 class="font-light mb-2 text-dark" >Commnde N°{{$order->id}}</h5>
                             <p class="text-gray-500 mb-3">
                                 {{$detail->product->subtitle}}
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="right">
-                       <a href="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Detail</a>
+                       <a href="{{route("order.show",["id" => $order->id])}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Detail</a>
                     </div>
                </div>
 

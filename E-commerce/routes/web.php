@@ -96,8 +96,9 @@ Route::prefix('/admin')
 
 
 Route::get('/order',[OrderController::class , 'store'])->name('order.store');
-Route::get('/order/confirmOrder/{order}',[OrderController::class , 'confirmOrder'])->name('order.confirm');
+Route::get('/order/confirmOrder/{id}',[OrderController::class , 'confirmOrder'])->name('order.confirm');
 Route::get('/order/index',[OrderController::class , 'index'])->name('order.index');
+Route::get('/order/{id}',[OrderController::class , 'show'])->name('order.show');
 Route::get('/Merci',[OrderController::class , 'thankYou'])->name('order.thankYou'); 
 
 

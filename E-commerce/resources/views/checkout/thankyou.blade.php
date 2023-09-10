@@ -1,5 +1,6 @@
 @extends('layout.partials')
 
+
 @section('content')
 <div class="p-4 p-md-5 mb-4 text-white rounded bg-secondary">
     <div class="col-md-6 m-auto">
