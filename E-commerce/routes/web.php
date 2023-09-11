@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Product;
+use App\Models\Categorie;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
@@ -25,7 +26,8 @@ Route::get('/', function () {
     return View('products.index', [
         'products' => Product::orderBy('created_at', 'desc')
             ->with("categories")
-            ->paginate(5)
+            ->paginate(10),
+        "categories" => Categorie::select("id","name")->get()
     ]);
 })->name('product.index');
 
@@ -39,16 +41,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('/boutique')->name('product.')->controller(ProductController::class)->group(function(){
 
+
+Route::prefix('/shopping')->name('product.')->controller(ProductController::class)->group(function(){
     Route::get('','index')->name('index');
     Route::get('/product/{slug}','show')->name('show');
-    
 });
 
 
-
-Route::prefix('/panier')
+Route::prefix('/shopping/cart')
 
     ->name('cart.')->controller(CartController::class)
     ->group(function(){
@@ -62,7 +63,7 @@ Route::prefix('/panier')
 });
 
 
-Route::prefix('/admin')
+Route::prefix('/shopping/admin')
 
     ->name('admin.')
     ->controller(AdminProductController::class)
@@ -78,7 +79,7 @@ Route::prefix('/admin')
 
 
 
-Route::prefix('/admin')
+Route::prefix('/shopping/admin')
 
     ->name('admin.')
     ->controller(CategoryController::class)
@@ -94,12 +95,16 @@ Route::prefix('/admin')
 });
 
 
+Route::prefix("/shopping")->group(function(){
 
-Route::get('/order',[OrderController::class , 'store'])->name('order.store');
-Route::get('/order/confirmOrder/{id}',[OrderController::class , 'confirmOrder'])->name('order.confirm');
-Route::get('/order/index',[OrderController::class , 'index'])->name('order.index');
-Route::get('/order/{id}',[OrderController::class , 'show'])->name('order.show');
-Route::get('/Merci',[OrderController::class , 'thankYou'])->name('order.thankYou'); 
+    Route::get('/order',[OrderController::class , 'store'])->name('order.store');
+    Route::get('/order/confirm/{id}',[OrderController::class , 'confirmOrder'])->name('order.confirm');
+    Route::post('/order/cancel/{id}',[OrderController::class , 'cancel'])->name('order.cancel');
+    Route::get('/order/index',[OrderController::class , 'index'])->name('order.index');
+    Route::get('/order/{id}',[OrderController::class , 'show'])->name('order.show');
+    Route::get('/Merci',[OrderController::class , 'thankYou'])->name('order.thankYou'); 
+
+});
 
 
 require __DIR__.'/auth.php';

@@ -9,6 +9,7 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
+
     
     public function index() : View
     {
@@ -23,7 +24,6 @@ class ProductController extends Controller
 
     public function show(string $slug) : View
     {
-
         $product = Product::where('slug',$slug)->first();
         $stock = $product->quantity == 0 ? "indisponible" : "disponible" ;
 

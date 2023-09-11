@@ -10,6 +10,14 @@
     
     <div class="py-12 m-10">
         <div class="max-w-7xl  mx-auto sm:px-6 lg:px-8">
+            <div class="px-5 py-5 mb-5 bg-white white:bg-gray-800   overflow-hidden shadow-sm sm:rounded-lg w-full">
+                <div class="w-auto">
+                    <h1 class="font-bold mb-2">Commande N° {{$order->id}}</h1>
+                    <span class="block font-light mb-2" >2 Article</span>
+                    <p class="block font-light mb-2" >Effectuer  le  {{$order->getDate()}} </p>
+                    <span class="block font-light mb-2" >Montant : {{getPrice($order->amounts)}} FCFA</span>
+                </div>
+           </div>
            @forelse ($order->detailOrder as $oneOrder)
                 <div class="flex justify-between px-5 py-5 mb-5 bg-white white:bg-gray-800   overflow-hidden shadow-sm sm:rounded-lg w-full">
                     <div class="flex justify-between w-auto">
@@ -36,8 +44,13 @@
                         </div>
                     </div>
                     <div class="right">
-                       <a href="" class=" block mb-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Annuler</a>
-                       <a href="" class=" block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Tracker</a>
+                         <form action="{{route("order.cancel",["id" => $oneOrder->id])}}" method="post">
+                            @csrf
+                            <button class="block mb-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">
+                                Annuler la commande
+                            </button>
+                         </form>
+                       <a href="" class="block bg-blue-500 text-center hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Tracker</a>
                     </div>
                </div>
            @empty

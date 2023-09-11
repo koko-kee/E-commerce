@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CancelOrderProcessed;
 use App\Models\Orders;
 use App\Models\Categorie;
 use Illuminate\View\View;
@@ -10,8 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Events\confirmOrderProcessed;
+use App\Models\detailOrder;
+use App\Models\Product;
 use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Console\Scheduling\Event;
 
 class OrderController extends Controller
 {
@@ -48,9 +52,15 @@ class OrderController extends Controller
             'amounts' => Cart::total(),
             'address' => 'dakar'
         ]);
+
+
         
         foreach (Cart::content() as $cartItem) {
 
+            $product = Product::find($cartItem->id);
+            $product->quantity -= $cartItem->qty;
+            $product->save();
+            
             $orders->detailOrder()->create([
 
                 'product_id' => $cartItem->id,
@@ -82,10 +92,17 @@ class OrderController extends Controller
     {
         // Logique de mise à jour de commande ici
     }
-
+    
     public function cancel($id)
     {
-        // Logique d'annulation de commande ici
+
+        $detailOrder = detailOrder::find($id);
+        $product = Product::find($detailOrder->product_id);
+        $product->quantity +=  $detailOrder->quantity;
+        $product->save();
+        $detailOrder->delete();
+        $user = Auth::user();
+        Event(new CancelOrderProcessed($user,$detailOrder));
     }
 
 

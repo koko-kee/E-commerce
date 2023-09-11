@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\CancelOrderProcessed;
 use App\Events\confirmOrderProcessed;
+use App\Listeners\SendOrderCancel;
 use App\Listeners\SendOrderConfirProcessed;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,7 +24,11 @@ class EventServiceProvider extends ServiceProvider
         ],
         confirmOrderProcessed::class => [
             SendOrderConfirProcessed::class,
+        ],
+        CancelOrderProcessed::class => [
+            SendOrderCancel::class,
         ]
+
     ];
 
     /**
