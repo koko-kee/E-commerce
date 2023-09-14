@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class detailOrder extends Model
 {
@@ -12,8 +13,11 @@ class detailOrder extends Model
     use SoftDeletes;
 
     protected $fillable = ['product_id','quantity','unity_price'];
+
     protected $casts = [
-        'created_at' => 'datetime:Y-m-d',
+
+        'deleted_at' => 'date',
+        'created_at' => 'date',
     ];
 
     public function order()
@@ -24,6 +28,13 @@ class detailOrder extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function getDate()
+    {
+        $date = new DateTime($this->deleted_at);
+        
+        return $date->format("Y-m-d");
     }
 
 

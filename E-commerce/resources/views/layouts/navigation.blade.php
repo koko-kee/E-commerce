@@ -11,22 +11,38 @@
                 </div>
 
                 <!-- Navigation Links -->
+                @php
+                    $routeName = request()->routeIs("admin.*")
+                @endphp
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('admin.product.index')" :active="request()->routeIs('admin.product.index')">
-                        {{ __('Gestions des produits') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('admin.category.index')" :active="request()->routeIs('admin.category.index')">
-                        {{ __('Gestions des categories') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('dashboard')">
-                        {{ __('Gestions des utilisateurs') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('dashboard')">
-                        {{ __('Gestions des commandes') }}
-                    </x-nav-link>
+                    @if (!$routeName)
+                        <x-nav-link  :href="route('order.index')" :active="request()->routeIs('order.index')">
+                            {{ __('COMMANDES OUVERTES') }}
+                        </x-nav-link>   
+                        <x-nav-link :href="route('order.closed')" :active="request()->routeIs('order.closed')">
+                            {{ __('COMMANDES FERMEES') }}
+                        </x-nav-link>
+                    @endif
+                    @can('admin')
+                            @if ($routeName)
+                                <x-nav-link :href="route('product.index')" :active="request()->routeIs('product.index')">
+                                    {{ __('Boutique') }}
+                                </x-nav-link>
+                                <x-nav-link :href="route('admin.product.index')" :active="request()->routeIs('admin.product.index')">
+                                    {{ __('Gestions des produits') }}
+                                </x-nav-link>
+                                <x-nav-link :href="route('admin.category.index')" :active="request()->routeIs('admin.category.index')">
+                                    {{ __('Gestions des categories') }}
+                                </x-nav-link>
+                                <x-nav-link :href="route('admin.dashboard')">
+                                    {{ __('Gestions des utilisateurs') }}
+                                </x-nav-link>
+                                <x-nav-link :href="route('admin.dashboard')">
+                                    {{ __('Gestions des commandes') }}
+                                </x-nav-link>                            
+                            @endif
+                    @endcan
+
                 </div>
             </div>
 
@@ -53,7 +69,6 @@
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
@@ -79,7 +94,7 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>

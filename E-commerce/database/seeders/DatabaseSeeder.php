@@ -7,7 +7,10 @@ namespace Database\Seeders;
 use Faker\Factory;
 use App\Models\Product;
 use App\Models\Categorie;
+use App\Models\Roles;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Testing\Fakes\Fake;
 
 class DatabaseSeeder extends Seeder
@@ -24,6 +27,34 @@ class DatabaseSeeder extends Seeder
         Categorie::create(['name' => 'accessoire']);
         Categorie::create(['name' => 'jeux']);
         Categorie::create(['name' => 'vetement']);
+
+        Roles::create(['name' => 'Admin']);
+        Roles::create(['name' => 'utilisateur']);
+        
+
+       $admin = User::create(
+
+            [
+                'name' => 'admin',
+                'email' => 'admin@gmail.com',
+                'password' => Hash::make("password"),
+                
+            ]
+        );
+
+        $user = User::create(
+
+            [
+                'name' => 'momo',
+                'email' => 'momo@gmail.com',
+                'password' => Hash::make("password"),
+                
+            ]
+        );
+
+
+        $admin->roles()->attach([1,2]);
+        $user->roles()->attach([2]);
         
         for ($i=1; $i <= 10; $i++) { 
             
@@ -40,7 +71,7 @@ class DatabaseSeeder extends Seeder
                 'image' => 'http://www.w3.org/2000/svg', 
 
             ])->categories()
-            ->attach([
+              ->attach([
                 rand(1,4),
                 rand(1,4),
             ]);

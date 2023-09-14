@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Categorie;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ProductController extends Controller
@@ -13,6 +14,7 @@ class ProductController extends Controller
     
     public function index() : View
     {
+
         return View('products.index', [
             'products' => Product::orderBy('created_at', 'desc')
                 ->with("categories")

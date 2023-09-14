@@ -16,6 +16,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Console\Scheduling\Event;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderController extends Controller
 {
@@ -27,7 +28,9 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Orders::where('user_id', Auth::id())->get();
+        $orders = Orders::where('user_id', Auth::id())
+                        ->orderBy("created_at","desc")
+                        ->paginate(10);
         return view('orders.index',[
             "orders" => $orders
         ]);
@@ -37,9 +40,11 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Orders::findOrFail($id);
-        //dd($order->detailOrder);
+        $count = $order->detailOrder->count();
+        $countArticle = $order->detailOrder->count() > 1  ? "$count Articles" : "$count Article" ;
         return view('orders.show',  [
-            "order" => $order
+            "order" => $order,
+            "count" => $countArticle
         ]);
     }
 
@@ -47,14 +52,21 @@ class OrderController extends Controller
     {
         $user = Auth::user();
 
-        $orders = Orders::create([
-            'user_id' => $user->id,
-            'amounts' => Cart::total(),
-            'address' => 'dakar'
+        $request->validate([
+            "address" => ["required"],
+            "tel" => ["required","numeric", "digits:9"] 
         ]);
 
 
-        
+
+        $orders = Orders::create([
+
+            'user_id' => $user->id,
+            'amounts' => Cart::subtotal(),
+            'address' => $request->input("address"),
+            'tel' => $request->input("tel")
+        ]);
+
         foreach (Cart::content() as $cartItem) {
 
             $product = Product::find($cartItem->id);
@@ -95,21 +107,77 @@ class OrderController extends Controller
     
     public function cancel($id)
     {
+    
+        $detailOrder = DetailOrder::findOrFail($id);
+        $order = Orders::findOrFail($detailOrder->orders_id);
+        $product = Product::findOrFail($detailOrder->product_id);
+         
 
-        $detailOrder = detailOrder::find($id);
-        $product = Product::find($detailOrder->product_id);
-        $product->quantity +=  $detailOrder->quantity;
+        $product->quantity += $detailOrder->quantity;
         $product->save();
+
+        $order->amounts -=  $detailOrder->quantity *  $product->price;
+        $order->save(); 
+
         $detailOrder->delete();
+
+        $numberOfDetails = $order->detailOrder->count();
+    
+        if ($numberOfDetails === 0) {
+
+            $order->order_statut = "annulée";
+            $order->save();
+        }
+    
         $user = Auth::user();
-        Event(new CancelOrderProcessed($user,$detailOrder));
+        event(new CancelOrderProcessed($user, $detailOrder));
+        return  redirect()->route('order.cancelPage');
     }
 
+
+    public function showFinalizeOrdersPage() : View
+    {
+        return View("orders.finalizeOrder",[
+            "categories" => Categorie::select("id","name")->get()
+        ]);
+    }
+
+    
+
+    public function showClosedOrders()
+    {
+        $orders = Orders::where('user_id', Auth::id())
+                    ->with([
+                        'detailOrder' => function ($query)
+                        {
+                            $query->onlyTrashed()->orderBy("deleted_at", "desc");
+                        }
+                    ])
+                    ->withCount([
+                        'detailOrder' => function (Builder $query)
+                        {
+                            $query->onlyTrashed();
+                        }
+                    ])
+                    ->paginate(10);
+
+        return view('orders.closed', [
+            "orders" => $orders
+        ]);
+    }
 
     public function thankYou()
     {
         Session::flash('thanks','votre commande a bien ete traitee');
-        return View('checkout.thankyou',[
+        return View('orders.thankyou',[
+            "categories" => Categorie::select("id","name")->get()
+        ]);
+    }
+
+    public function cancelPage()
+    {
+        Session::flash('cancel','votre commande a bien ete annuler');
+        return View('orders.cancel',[
             "categories" => Categorie::select("id","name")->get()
         ]);
     }

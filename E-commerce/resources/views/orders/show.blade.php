@@ -3,17 +3,15 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h2 class="font-semibold text-xl  leading-tight">
-            {{ __('Detail commande') }}
-        </h2>
+       
     </x-slot>
-    
+
     <div class="py-12 m-10">
         <div class="max-w-7xl  mx-auto sm:px-6 lg:px-8">
             <div class="px-5 py-5 mb-5 bg-white white:bg-gray-800   overflow-hidden shadow-sm sm:rounded-lg w-full">
                 <div class="w-auto">
                     <h1 class="font-bold mb-2">Commande N° {{$order->id}}</h1>
-                    <span class="block font-light mb-2" >2 Article</span>
+                    <span class="block font-light mb-2" >{{$count}}</span>
                     <p class="block font-light mb-2" >Effectuer  le  {{$order->getDate()}} </p>
                     <span class="block font-light mb-2" >Montant : {{getPrice($order->amounts)}} FCFA</span>
                 </div>

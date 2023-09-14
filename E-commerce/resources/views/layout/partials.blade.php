@@ -167,7 +167,7 @@
       </div>
       <div class="col-4  text-center d-flex align-items-center">
         <img width="75" src="/storage/produit/kisspng-computer-icons-scalable-vector-graphics-applicatio-tynor-wrist-splint-ambidextrous-rs-274-wrist-s-5bac3149dcb297.944285061538011465904-removebg-preview.png" alt="">
-        <a class=" d-block blog-header-logo text-dark font-weight-light text-decoration-none" href="/boutique">Shopping</a>
+        <a class=" d-block blog-header-logo text-dark font-weight-light text-decoration-none" href="/shopping">Shopping</a>
       </div>
       <div class="col-4 d-flex justify-content-end align-items-center">
         <nav class="navbar navbar-light ">
@@ -179,10 +179,12 @@
         @auth
         <div class="dropdown">
           <a class="d-inline-block dropdown-toggle text-decoration-none text-secondary m-3" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-           {{Auth::user()->name}}
+          {{Auth::user()->name}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li class="mb-2"><a class="dropdown-item" href="/dashboard"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+           @can('admin')
+             <li class="mb-2"><a class="dropdown-item" href="/dashboard"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+           @endcan
             <li class="mb-2"><a class="dropdown-item" href="{{route("order.index")}}"><i class="fas fa-shopping-cart"></i> Mes commandes</a></li>
             <li class="mb-2"><a class="dropdown-item" href="#"><i class="fas fa-envelope"></i> Boite de réception</a></li>
             <li class="mb-2">
@@ -226,6 +228,11 @@
 @if (session('success'))
   <div class="alert alert-success">
       {{session('success')}}
+  </div>  
+@endif
+@if (session('cancel'))
+  <div class="alert alert-success">
+      {{session('cancel')}}
   </div>  
 @endif
 @if (session('danger'))

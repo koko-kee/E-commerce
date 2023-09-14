@@ -5,16 +5,17 @@ namespace App\Models;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Orders extends Model
 {
     use HasFactory;
-     
+
     protected $casts = [
         'created_at' => 'date',
     ];
 
-    protected $fillable = ['user_id','order_statut','amounts','address'];
+    protected $fillable = ['user_id','order_statut','amounts','address',"tel"];
 
     public function user()
     {

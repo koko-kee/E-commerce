@@ -94,11 +94,10 @@
               <ul class="list-unstyled mb-4">
                 <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>{{getPrice(Cart::subtotal())}}</strong></li>
                 {{-- <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong>$10.00</strong></li> --}}
-                <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax</strong><strong>{{getPrice(Cart::tax())}}</strong></li>
                 <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
-                  <h5 class="font-weight-bold">{{getPrice(Cart::total())}}</h5>
+                  <h5 class="font-weight-bold">{{getPrice(Cart::subtotal())}}</h5>
                 </li>
-              </ul><a href="{{route('order.store')}}" class="btn btn-dark rounded-pill py-2 btn-block">Commander</a>
+              </ul><a href="{{route('order.showFinalizeOrdersPage')}}" class="btn btn-dark rounded-pill py-2 btn-block">Commander</a>
             </div>
           </div>
         </div>
